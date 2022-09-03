@@ -64,15 +64,28 @@ public class PreparedStatement01 {
 
         //2. Örnek: "SELECT * FROM <table name>" query'sini prepared statement ile kullanın.
 
-        String sql4 = "SELECT * FROM ?";
-        PreparedStatement pst2=con.prepareStatement(sql4);
-        pst2.setString(1,"companies");
+        System.out.println("==============");
+        read_data(con,"companies");
+    }
+    // Bir tablonun istenilen datasını Prepared Statement çağırmak için kullanılan method
+    public static void read_data(Connection con,String tableName){
 
-        ResultSet result4=pst2.executeQuery();
+       try {
+           String query = String.format("SELECT * FROM  %s",tableName);//Format() methodu String olusturmak için
 
-        while (result4.next()){
-            System.out.println(result4.getInt(1)+" "+result4.getString(2)+" "+ result4.getInt(3));
-        }
+          Statement statement =  con.createStatement();
 
+           //SQL query'yi çağır
+          ResultSet rs= statement.executeQuery(query);// Datayı çağırıp resultSet konteynırına koyuyoruz
+
+          while (rs.next()){//Tüm datayı çağıralım
+              System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+ rs.getInt(3));
+
+          }
+
+
+       }catch (Exception e){
+           System.out.println(e);
+       }
     }
 }
